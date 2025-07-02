@@ -146,7 +146,7 @@ function createForm(recepie = new Recepie()){
     });
 
     //добавить рецепт
-    div.querySelector(".addRecButton").addEventListener("click", (e) => {
+    div.querySelector(".addRecButton").addEventListener("click", async (e) => {
         //проверка на название
         const titles = Array.from(Object.keys(DictRecepies));
         const title = div.querySelector("#input-t").value;
@@ -187,6 +187,20 @@ function createForm(recepie = new Recepie()){
 
         // переделка в класс
         const newRecepie = new Recepie(title, ingredients, steps);
+        
+        const image = div.querySelector("img").src;
+        try{
+            Loader.style.opacity = 1;
+            await POSTIMAGE(image, title);
+        }
+        catch{
+            showError("картинка слишком большая");
+            Loader.style.opacity = 0;
+            return;
+        }
+        await POSTRECEPIE(newRecepie);
+        Loader.style.opacity = 0;
+        
         ArrayRecepies.push(newRecepie);
         ingredients.forEach(ingredient => {
             const len = SetOfIngredients.size;
@@ -202,8 +216,7 @@ function createForm(recepie = new Recepie()){
                 ingredientDiv.appendChild(newObject);
             }
         });
-        const image = div.querySelector("img").src;
-
+        
         ////разборки с картинкой
         // const sep = image[Math.floor(image.length/2)]
         // const temp = image.split(sep);
@@ -215,8 +228,6 @@ function createForm(recepie = new Recepie()){
         // localStorage.setItem(`${title}-2`, temp[1])
 
 
-        POSTRECEPIE(newRecepie);
-        POSTIMAGE(image, title);
         
         div.classList = ["OuterCard"];
 

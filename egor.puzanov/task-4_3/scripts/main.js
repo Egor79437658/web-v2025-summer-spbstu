@@ -1,5 +1,5 @@
 const GrayScreenMain = document.getElementById("GrayScreen1");
-const loader = document.getElementById("loader");
+const Loader = document.getElementById("loader");
 let DictRecepies = {};
 let Images = {};
 const ArrayRecepies = [];
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async (e) => {
   );
   Images = answer[1] || {};
   const recepiesFromStorage = answer[0] || {};
-  loader.style.opacity = 0;
+  Loader.style.opacity = 0;
   document.getElementById("addRecepie").style.opacity = 1;
 
   const grid = document.getElementById("forTable1");
@@ -91,9 +91,9 @@ document.addEventListener("DOMContentLoaded", async (e) => {
   });
 
   // кнопка "убрать фильтр по ингредиетам"
-  document
-    .querySelector(".objectBtn.specialBtn")
-    .addEventListener("click", (e) => {
+  const specialIngredientButton = document.querySelector(".objectBtn.specialBtn");
+  specialIngredientButton.textContent = "Все ингредиенты";
+  specialIngredientButton.addEventListener("click", (e) => {
       // убирает подписи о фильтрации
       const headers = document.querySelectorAll(".FilterIngr");
       Array.from(headers).forEach((div) => {
@@ -153,9 +153,14 @@ document.addEventListener("DOMContentLoaded", async (e) => {
     });
   }
 
+  document.getElementById("listObjectBtn").textContent="Все ингрeдиенты";
+  document.getElementById("listSourceBtn").textContent="Без группировки";
+
   //группировка по шагам/ингредиентам
   const groups = Array.from(document.getElementsByClassName("sourceBtn"));
-
+  groups[0].textContent="Без группировки";
+  groups[1].textContent="Сгруппировать по кол-ву ингредиентов";
+  groups[2].textContent="Сгруппировать по кол-ву шагов";
   for (let i = 0; i < groups.length; ++i) {
     groups[i].addEventListener("click", (e) => {
       const grouping = e.currentTarget.textContent;
@@ -213,17 +218,17 @@ document.addEventListener("DOMContentLoaded", async (e) => {
               const header = document.createElement("h2");
               header.classList.add("groupStep");
               header.textContent = `Количество ингредиентов: ${key}`;
-              document.querySelector("main").insertBefore(header, loader);
+              document.querySelector("main").insertBefore(header, Loader);
               const ingrFiltr =
                 document.querySelector("#listObjectBtn").textContent;
               if (ingrFiltr !== "Все ингрeдиенты") {
                 const header = document.createElement("h2");
                 header.classList.add("FilterIngr");
                 header.textContent = `Рецепты, содержащие: ${ingrFiltr}`;
-                document.querySelector("main").insertBefore(header, loader);
+                document.querySelector("main").insertBefore(header, Loader);
               }
             }
-            document.querySelector("main").insertBefore(forTable, loader);
+            document.querySelector("main").insertBefore(forTable, Loader);
           });
           const grids = document.querySelectorAll(".forTable");
           Array.from(grids).forEach((div) => {
@@ -260,17 +265,17 @@ document.addEventListener("DOMContentLoaded", async (e) => {
               const header = document.createElement("h2");
               header.classList.add("groupStep");
               header.textContent = `Количество шагов: ${key}`;
-              document.querySelector("main").insertBefore(header, loader);
+              document.querySelector("main").insertBefore(header, Loader);
               const ingrFiltr =
                 document.querySelector("#listObjectBtn").textContent;
               if (ingrFiltr !== "Все ингрeдиенты") {
                 const header = document.createElement("h2");
                 header.classList.add("FilterIngr");
                 header.textContent = `Рецепты, содержащие: ${ingrFiltr}`;
-                document.querySelector("main").insertBefore(header, loader);
+                document.querySelector("main").insertBefore(header, Loader);
               }
             }
-            document.querySelector("main").insertBefore(forTable, loader);
+            document.querySelector("main").insertBefore(forTable, Loader);
           });
           const grids = document.querySelectorAll(".forTable");
           Array.from(grids).forEach((div) => {

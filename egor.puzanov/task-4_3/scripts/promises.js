@@ -18,28 +18,42 @@ function GETIMAGES() {
 }
 //передается весь массив
 function PATCHDATA(data) {
-    return new Promise((resolve) => resolve(setTimeout(() => localStorage.setItem('data', JSON.stringify(data)), 1000)));
+    return new Promise((resolve) => {
+        setTimeout(() => localStorage.setItem('data', JSON.stringify(data)), 1000);
+        resolve();
+    });
 }
 
 function PATCHIMAGES(images) {
-    return new Promise((resolve) => resolve(setTimeout(() => localStorage.setItem('images', JSON.stringify(images)), 1000)));
+    return new Promise((resolve) => {
+        setTimeout(() => localStorage.setItem('images', JSON.stringify(images)), 1000);
+        resolve();
+    });
   
 }
-
+    
 //передается один эл-нт
 async function POSTRECEPIE(recepie) {
     DictRecepies[recepie.title] = recepie;
-    await new Promise((resolve) => resolve(setTimeout(() => localStorage.setItem('data', JSON.stringify(DictRecepies)), 1000))).then( () => {return} );
-    return
+    await new Promise((resolve) => {
+        setTimeout(() => localStorage.setItem('data', JSON.stringify(DictRecepies)), 1000)
+    resolve()}).then( () => {return} );
+    return;
 }
 async function POSTIMAGE(image, title) {
-    try {
-        Images[title] = image;
-        await new Promise((resolve) => resolve(setTimeout(() => localStorage.setItem('images', JSON.stringify(Images)), 1000))).then( () => {return} );
-    }
-    catch (err){
-        Images[title] = "";
-        await new Promise((resolve) => resolve(setTimeout(() => localStorage.setItem('images', JSON.stringify(Images)), 1000))).then( () => {return} );
-    }
-    return
+    Images[title] = image;
+    await new Promise((resolve, reject) => setTimeout(() => {
+        try{
+            localStorage.setItem('images', JSON.stringify(Images));
+            resolve()
+        }
+        catch{
+            reject(new Error("что-то пошло не так"))
+        }
+    }, 1000)).then( () => {
+        return;
+    }).catch((message) => {
+        console.log(message); throw new Error(message);
+    });
+    // return
 }
